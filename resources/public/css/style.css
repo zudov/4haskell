@@ -559,7 +559,7 @@ button:active {
   text-align: center;
 }
 
-#instruct{
+.instruct{
   font-weight: bold;
   padding-top: 25px;
   width: 100%;
@@ -659,3 +659,6 @@ hr.solution {
     margin-bottom: 20px;
 }
 
+.CodeMirror {
+  height: auto;
+}

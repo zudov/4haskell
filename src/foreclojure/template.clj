@@ -21,11 +21,12 @@
        [:title (:title attrs)]
        [:link {:rel "alternate" :type "application/atom+xml" :title "Atom" :href "/problems/rss"}]
        [:link {:rel "shortcut icon" :href (static-url "favicon2.ico")}]
-       (css "css/style.css" "css/demo_table.css" "css/codemirror.css")
+       (css "css/demo_table.css" "css/codemirror.css" "css/style.css")
        (apply css (map #(format "css/theme/%s.css" %) codemirror-themes))
        (js "vendor/script/jquery-1.5.2.min.js" "vendor/script/jquery.dataTables.min.js" "vendor/script/jquery.flipCounter.1.1.pack.js" "vendor/script/jquery.easing.1.3.js" "vendor/script/jquery.dataTables.fnSetFilteringDelay.js")
        (js "script/codebox.js" "script/foreclojure.js")
-       (js "vendor/script/codemirror-clojure-compressed.js")
+       (js "vendor/script/codemirror.js")
+       (js "vendor/script/codemirror-haskell.js")
        (js "vendor/script/detectmobilebrowser.js")
        (javascript-tag (format "CodeBox.theme = '%s';" (get-theme)))]
       [:body
@@ -33,7 +34,7 @@
          [:div#github-banner [:a {:href repo-url
                                   :alt "Fork 4Clojure on Github!"}]])
        [:div#top
-        (link-to "/" [:img#logo {:src (static-url "images/4clj-logo-small.png")
+        (link-to "/" [:img#logo {:src (static-url "images/4hs-logo.png")
                                  :alt "4clojure.com"}])]
        [:div#content
         [:div#menu
@@ -42,8 +43,8 @@
                 ["/problems" "Problem List"]
                 ["/users" "Top Users"]
                 ["/directions" "Help"]
-                ["http://try-clojure.org" "REPL" true]
-                ["http://clojuredocs.org" "Docs" true]]]
+                ["http://tryhaskell.org" "REPL" true]
+                ["https://downloads.haskell.org/~ghc/7.6-latest/docs/html/libraries/base-4.6.0.1/Prelude.html" "Docs" true]]]
            [:a.menu (assoc (when tabbed {:target "_blank"})
                       :href link)
             text])

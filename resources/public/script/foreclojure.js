@@ -251,7 +251,7 @@ function highlightPreElements() {
     var editor = CodeMirror(function(editor) {
       el.replaceWith(editor);
     }, {value: el.text(),
-        mode: 'clojure',
+        mode: 'haskell',
         readOnly: true,
         lineNumbers: hasLineNumbers,
         theme: CodeBox.theme});
