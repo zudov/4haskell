@@ -20,6 +20,8 @@
             [hiccup.element           :only    [link-to]]
             [hiccup.core              :only    [html]]
             [useful.debug             :only    [?]]
+            [clojure.java.shell       :only    [sh]]
+            [clojure.java.io          :only    [delete-file]]
             [compojure.core           :only    [defroutes GET POST]]))
 
 (def solved-stats (agent {:total 0}))
@@ -92,9 +94,7 @@
   (when code (.trim code)))
 
 (defn code-length [code]
-  (count (remove #(or (Character/isWhitespace %)
-                      (= % \,))
-                 code)))
+  (count (remove #(Character/isWhitespace %) code)))
 
 (defn record-golf-score! [user-id problem-id score]
   (when-let [{{old-score (keyword (str problem-id))} :scores
@@ -160,21 +160,38 @@
     (session/put! :code [_id code])
     {:message message, :error "",  :url (str "/problem/" _id)}))
 
-(def restricted-list '[use require in-ns future agent send send-off pmap pcalls])
+(defn read-mueval [{:keys [out exit err]}]
+  (let [[expression expr-type result] (s/split-lines out)]
+    (println (pr-str [out exit err]))
+    (cond (= exit 0) {:expression expression :type expr-type :result result}
+          (= exit 1) (if (= err "mueval-core: Time limit exceeded\n")
+                                 {:time-limit ()}
+                                 {:error out})
+          (= exit 137) {:time-limit ()} ;; FIXME: I am not sure if 137 only mean exceeded time limit
+          :else (do (println "Unhandled exit code") ;; TODO: Logging
+                    {:error err}))))
 
-(defn get-tester [restricted]
-  (conj secure-tester
-        (blacklist-symbols (set (concat restricted-list
-                                        (map symbol restricted))))))
+(def alpha "ABCDEFGHIJKLMNOPQRSTUVWXYZ")
+(defn get-random-string [length]
+    (apply str (repeatedly length #(rand-nth alpha))))
 
-(def sb (sandbox*))
+(defn make-file-content [code restricted module-name]
+  (s/join "\n" (map #(apply str %)
+                    [["module " module-name " where"]
+                     ["import Prelude hiding (" (s/join "," restricted) ")"]
+                     [code]])))
 
-(defn read-string-safely [s]
-  (binding [*read-eval* false]
-    (with-in-str s
-      (let [end (Object.)]
-        (doall (take-while (complement #{end})
-                           (repeatedly #(read *in* false end))))))))
+(defn mueval [code restricted expr]
+  (let [tmp-module (get-random-string 10)
+        tmp-file-name (str tmp-module ".hs")
+        mueval-output (do (spit tmp-file-name (make-file-content code restricted tmp-module))
+                          (sh "mueval" "-i" "-n" "-l" tmp-file-name "-t" "10" "-e" expr))
+        {:keys [result time-limit error]} (read-mueval mueval-output)] ;; TODO Use binding form
+    (delete-file tmp-file-name)
+    (cond (= result "True") nil
+          (= result "False") "You failed some unit tests"
+          time-limit "Evaluation exceeded the time limit"
+          :else error)))
 
 (defn run-code
   "Run the specified code-string against the test cases for the problem with the
@@ -182,31 +199,15 @@ specified id.
 
 Return a map, {:message, :error, :url, :num-tests-passed}."
   [id code]
-  (try
-    (let [{:keys [tests restricted] :as problem} (get-problem id)
-          sb-tester (get-tester restricted)
-          user-forms (s/join " " (map pr-str (read-string-safely code)))
-          devnull (java.io.StringWriter.) ;; TODO consider Apache Commons IO
-          results (if (empty? user-forms)
-                    ["Empty input is not allowed."]
-                    (for [test tests]
-                      (try
-                        (when-not (sb (->> user-forms
-                                           (s/replace test "__")
-                                           read-string-safely
-                                           first)
-                                      sb-tester
-                                      {#'*out* devnull
-                                       #'*err* devnull})
-                          "You failed the unit tests")
-                        (catch Throwable t (.getMessage t)))))
+  (let [{:keys [tests restricted] :as problem} (get-problem id)
+          results (if (empty? code) ["Empty input is not allowed."]
+                      (for [test tests]
+                         (time (mueval code restricted test))))
           [passed [fail-msg]] (split-with nil? results)]
       (assoc (if fail-msg
                {:message "", :error fail-msg, :url *url*}
                (mark-completed problem code))
-        :num-tests-passed (count passed)))
-    (catch Throwable t {:message "" :error (.getMessage t), :url *url*
-                        :num-tests-passed 0})))
+        :num-tests-passed (count passed))))
 
 (defn static-run-code [id code]
   (session/flash-put! :code code)
@@ -267,7 +268,7 @@ Return a map, {:message, :error, :url, :num-tests-passed}."
 
 (def-page code-box [id]
   (let [{:keys [_id title difficulty tags description
-                restricted tests approved user]}
+                restricted tests approved user defs]}
         (get-problem (Integer. id)),
         title (str (when-not approved
                      "Unapproved: ")
@@ -309,7 +310,7 @@ Return a map, {:message, :error, :url, :num-tests-passed}."
       (form-to {:id "run-code"} [:post *url*]
         [:br]
         [:br]
-        [:p#instruct "Code which fills in the blank: "]
+        [:p.instruct "Code which fills in the blank: "]
         (when (wants-no-javascript-codebox?) [:span#disable-javascript-codebox])
         (text-area {:id "code-box"
                     :name "code"
@@ -317,7 +318,8 @@ Return a map, {:message, :error, :url, :num-tests-passed}."
                    :code (or (session/flash-get :code)
                              (-> (session/get :user)
                                  (get-user-id)
-                                 (get-solution ,,, _id))))
+                                 (get-solution ,,, _id))
+                             defs))
         [:div#golfgraph
          (render-golf-chart)]
         (hidden-field :id id)
@@ -383,6 +385,7 @@ Return a map, {:message, :error, :url, :num-tests-passed}."
 
               solns (fetch :solutions
                            :where {:user {:$in (map :_id top-users)}
+                                   :problem problem-id
                                    :code {:$ne nil}}
                            :limit 5)]
           (for [soln solns
