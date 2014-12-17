@@ -162,7 +162,6 @@
 
 (defn read-mueval [{:keys [out exit err]}]
   (let [[expression expr-type result] (s/split-lines out)]
-    (println (pr-str [out exit err]))
     (cond (= exit 0) {:expression expression :type expr-type :result result}
           (= exit 1) (if (= err "mueval-core: Time limit exceeded\n")
                                  {:time-limit ()}
@@ -193,6 +192,10 @@
           time-limit "Evaluation exceeded the time limit"
           :else error)))
 
+(defn validate-code [code]
+  (cond (empty? code) ["Empty input is not allowed."]
+        (re-find #"(^| |\n|\t)import( |\n|\t)" code) ["Imports are not allowed."]))
+
 (defn run-code
   "Run the specified code-string against the test cases for the problem with the
 specified id.
@@ -200,9 +203,9 @@ specified id.
 Return a map, {:message, :error, :url, :num-tests-passed}."
   [id code]
   (let [{:keys [tests restricted] :as problem} (get-problem id)
-          results (if (empty? code) ["Empty input is not allowed."]
+          results (or (validate-code code)
                       (for [test tests]
-                         (time (mueval code restricted test))))
+                         (mueval code restricted test)))
           [passed [fail-msg]] (split-with nil? results)]
       (assoc (if fail-msg
                {:message "", :error fail-msg, :url *url*}
