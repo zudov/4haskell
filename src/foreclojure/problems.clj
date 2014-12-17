@@ -174,11 +174,16 @@
 (defn get-random-string [length]
     (apply str (repeatedly length #(rand-nth alpha))))
 
+(defn add-blank-def [code]
+  (if (re-find #"__" code)
+      code
+      (str "__ = " code)))
+
 (defn make-file-content [code restricted module-name]
   (s/join "\n" (map #(apply str %)
                     [["module " module-name " where"]
                      ["import Prelude hiding (" (s/join "," restricted) ")"]
-                     [code]])))
+                     [(add-blank-def code)]])))
 
 (defn mueval [code restricted expr]
   (let [tmp-module (get-random-string 10)
@@ -313,7 +318,7 @@ Return a map, {:message, :error, :url, :num-tests-passed}."
       (form-to {:id "run-code"} [:post *url*]
         [:br]
         [:br]
-        [:p.instruct "Code which fills in the blank: "]
+        [:p.instruct "Code which fills in the blank or defines a function \"__\":"]
         (when (wants-no-javascript-codebox?) [:span#disable-javascript-codebox])
         (text-area {:id "code-box"
                     :name "code"
