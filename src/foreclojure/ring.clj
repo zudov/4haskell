@@ -64,11 +64,11 @@
 (def render-404
   (html
    [:head
-    [:title "4clojure: Page not found"]]
+    [:title "4Haskell: Page not found"]]
    [:body
     [:div {:style "margin-left: auto; margin-right: auto; width: 300px;"}
      [:p {:style "text-align: center; width: 100%; margin-top: 45px; font-family: helvetica; color: gray; font-size: 25px;"} "404 &mdash; Page not found."]
-     [:img {:style "margin-left: 18px;" :src (static-url "images/4clj-gus-confused-small.png")}]]]))
+     [:img {:style "margin-left: 18px;" :src (static-url "images/4hs-logo-big.png")}]]]))
 
 (defn wrap-404 [handler]
   (routes handler
