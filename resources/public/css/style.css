@@ -633,6 +633,7 @@ a.graph-class :hover {color: #445599;}
 
 .CodeMirror {
     font-size: 14px;
+    line-height: 1.2em;
 }
 
 .CodeMirror .CodeMirror-scroll {
