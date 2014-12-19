@@ -29,7 +29,7 @@
 
     [:div
      [:h3 "Is this site written in Haskell?"]
-     "No.  This site is a fork of " [:a {:href "http://4clojure.com"} "4Clojure.com"] " and is written in Clojure"]
+     "No.  This site is a fork of " [:a {:href "http://4clojure.com"} "4Clojure.com"] " and is written in Clojure"]]})
 
 (defn code-sample [& code]
   (list [:br]
