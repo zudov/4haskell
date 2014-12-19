@@ -31,8 +31,8 @@
 (comment
   (spit (java.io.File. "test.xml")
         (create-feed  "Recent Problems"
-                      "http://4clojure.com"
-                      "Recent problems at 4clojure"
-                      "http://4clojure.com/problems/rss"
+                      "http://4haskell.com"
+                      "Recent problems at 4Haskell"
+                      "http://4haskell.com/problems/rss"
                       (problem-feed 20))))
 

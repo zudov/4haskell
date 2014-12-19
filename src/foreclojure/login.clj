@@ -12,7 +12,7 @@
             [clojure.stacktrace       :only [print-cause-trace]]
             [somnium.congomongo       :only [update! fetch-one]]))
 
-(def password-reset-url "https://www.4clojure.com/settings")
+(def password-reset-url "https://www.4haskell.com/settings")
 
 (def login-box
   (form-to [:post "/login"]
@@ -34,7 +34,7 @@
 (def-page my-login-page [location]
   (do
     (if location (session/put! :login-to location))
-    {:title "4clojure - login"
+    {:title "4Haskell - login"
      :content
      (content-page
       {:main login-box})}))
@@ -82,11 +82,11 @@
                   {:_id id}
                   {:$set {:pwd hash}})
          (send-email
-          {:from "team@4clojure.com"
+          {:from "team@4haskell.com"
            :to [email]
            :subject "Password reset"
            :text
-           (str "The password for your 4clojure.com account "
+           (str "The password for your 4haskell.com account "
                 name " has been reset to " pw ". Make sure to change it"
                 " soon at " password-reset-url " - pick"
                 " something you'll remember!")})

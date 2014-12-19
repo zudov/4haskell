@@ -74,7 +74,7 @@
   (reduce (fn [feed v]
             (conj feed
                   (element :item {}
-                    (element :guid {} (str "http://4clojure.com/problem/" (:_id v)))
+                    (element :guid {} (str "http://4haskell.com/problem/" (:_id v)))
                     (element :title {} (:title v))
                     (element :description {} (:description v)))))
           ()
@@ -357,7 +357,7 @@ Return a map, {:message, :error, :url, :num-tests-passed}."
     (escape-html code)]])
 
 (def-page show-solutions-page [problem-id]
-  {:title "4Clojure - Problem Solutions"
+  {:title "4Haskell - Problem Solutions"
    :content
    (list
     [:div.message (session/flash-get :message)]
@@ -385,7 +385,7 @@ Return a map, {:message, :error, :url, :num-tests-passed}."
          [:p "None of the users you follow have solved this problem yet!"])
 
        [:h3 "Top users' solutions"]
-       [:p "These solutions were written by some of the top users of 4Clojure."]
+       [:p "These solutions were written by some of the top users of 4Haskell."]
        (interpose
         [:hr.solution]
         (let [top-users (take 15 (get-ranked-users))
@@ -416,7 +416,7 @@ Return a map, {:message, :error, :url, :num-tests-passed}."
 (let [checkbox-img (image-builder {true ["images/checkmark.png" "completed"]
                                    false ["images/empty-sq.png" "incomplete"]})]
   (def-page problem-list-page []
-    {:title "4clojure - Problem Listing"
+    {:title "4Haskell - Problem Listing"
      :content
      (list
       [:div.message (session/flash-get :message)]
@@ -488,7 +488,7 @@ Return a map, {:message, :error, :url, :num-tests-passed}."
    :content
    (list
     [:div.instructions
-     [:p "Thanks for choosing to submit a problem. Please make sure that you own the rights to the code you are submitting and that you wouldn't mind having us use the code as a 4clojure problem.  Once you've submitted your problem, it won't appear on the site until someone from the 4clojure team has had a chance to review it."]]
+     [:p "Thanks for choosing to submit a problem. Please make sure that you own the rights to the code you are submitting and that you wouldn't mind having us use the code as a 4Haskell problem.  Once you've submitted your problem, it won't appear on the site until someone from the 4Haskell team has had a chance to review it."]]
     (form-to {:id "problem-submission"} [:post "/problems/submit"]
       (hidden-field :author (session/flash-get :author))
       (hidden-field :prob-id (session/flash-get :prob-id))
@@ -521,7 +521,7 @@ Return a map, {:message, :error, :url, :num-tests-passed}."
                           :seqs
                           {:_id "problems"}
                           {:$inc {:seq 1}})))
-            edit-url (str "https://4clojure.com/problem/"
+            edit-url (str "https://4haskell.com/problem/"
                           id)
             existing-problem (fetch-one :problems
                                         :where {:_id id}
@@ -531,8 +531,8 @@ Return a map, {:message, :error, :url, :num-tests-passed}."
         (when-not existing-problem
           (try
             (send-email
-             {:from "team@4clojure.com"
-              :to ["team@4clojure.com"]
+             {:from "team@4haskell.com"
+              :to ["team@4haskell.com"]
               :reply-to [(users/email-address user)]
               :subject (str "User submission: " title)
               :html (html [:h3 (link-to edit-url title)]
@@ -584,10 +584,10 @@ Return a map, {:message, :error, :url, :num-tests-passed}."
                {:$set {:approved true}})
       (try
         (send-email
-         {:from "team@4clojure.com"
+         {:from "team@4haskell.com"
           :to [(users/email-address user)]
           :subject (format "Problem #%d: submission accepted" id)
-          :html (html (link-to (str "http://www.4clojure.com/" url) title))
+          :html (html (link-to (str "http://www.4haskell.com/" url) title))
           :text (str title ": " url)})
         ;; TODO: dump this in a proper log
         (catch EmailException e (println (str "email failed to send on approved problem #" id))))
@@ -602,7 +602,7 @@ Return a map, {:message, :error, :url, :num-tests-passed}."
       (destroy! :problems
                 {:_id id})
       (send-email
-       {:from "team@4clojure.com"
+       {:from "team@4haskell.com"
         :to [email]
         :subject "Problem rejected"
         :text
@@ -647,8 +647,8 @@ Return a map, {:message, :error, :url, :num-tests-passed}."
     {:headers {"Content-Type" "application/json"}}
     (rest-run-code (Integer. id) (trim-code code)))
   (GET "/problems/rss" [] (create-feed
-                           "4Clojure: Recent Problems"
-                           "http://4clojure.com/problems"
-                           "Recent problems at 4Clojure.com"
-                           "http://4clojure.com/problems/rss"
+                           "4Haskell: Recent Problems"
+                           "http://4haskell.com/problems"
+                           "Recent problems at 4Haskell.com"
+                           "http://4haskell.com/problems/rss"
                            (problem-feed 20))))

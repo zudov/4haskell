@@ -1,7 +1,7 @@
-# 4Clojure
+# 4Haskell
 
-An interactive problem website for learning Clojure:
-[https://www.4clojure.com](https://www.4clojure.com).
+An interactive problem website for learning Haskell 'by doing':
+[http://www.4haskell.com](http://www.4haskell.com). It's not ready yet but hopefully will be soon.
 
 ## Contributing
 
@@ -9,22 +9,11 @@ Anyone interested in contributing should check out
 the [Issues](https://github.com/4clojure/4clojure/issues) page for ideas
 on what to work on.
 
-Join us in #4clojure on freenode for help or discussion.
-
 ## Setup instructions for running locally
 
 * Download and install [leiningen](https://github.com/technomancy/leiningen).
 * Download and install [mongodb](http://www.mongodb.org/).
-* The project uses
-[clojail](https://github.com/flatland/clojail), which
-requires a security policy setup in your home directory (because
-Clojure's `eval` is unsafe if used improperly).  Set up a file called
-`.java.policy` in your home directory.  The contents should look
-vaguely like this:
-
-        grant { permission java.security.AllPermission; };
-
-    but see the readme of that project for more details.
+* Use cabal to build [mueval](https://hackage.haskell.org/package/mueval) and make sure that mueval binaries are in your PATH
 
 * cd to the 4clojure project directory and run `lein deps`.
 * Start up your mongodb, if you don't have autostart:
@@ -54,7 +43,7 @@ vaguely like this:
 * [Ara Jeknavorian](https://github.com/arajek) (arajek)
 
 
-Problem sources:
+Problem inspirations:
 
  * Aaron Bedra's [Clojure Koans](https://github.com/functional-koans/clojure-koans)
  * [Ninety-Nine Lisp Problems](http://www.ic.unicamp.br/~meidanis/courses/mc336/2006s2/funcional/L-99_Ninety-Nine_Lisp_Problems.html)

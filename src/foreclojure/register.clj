@@ -10,7 +10,7 @@
             [somnium.congomongo       :only [insert! fetch-one]]))
 
 (def-page register-page []
-  {:title "4clojure &ndash; Register"
+  {:title "4Haskell &ndash; Register"
    :content
    (list
     [:div.error (session/flash-get :error)]

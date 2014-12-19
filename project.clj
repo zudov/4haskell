@@ -1,5 +1,5 @@
 (defproject foreclojure "2.0.0-rc2"
-  :description "4clojure - a website for learning Clojure"
+  :description "4Haskell - a website for practicing Haskell"
   :dependencies [[org.clojure/clojure "1.4.0"]
                  [compojure "1.1.0"]
                  [hiccup "1.0.0"]
@@ -17,7 +17,8 @@
                  [incanter/incanter-charts "1.3.0"]
                  [commons-lang "2.6"]
                  [org.apache.commons/commons-email "1.2"]
-                 [org.clojure/data.xml "0.0.5"]]
+                 [org.clojure/data.xml "0.0.5"]
+                 [com.novemberain/langohr "3.0.0-rc2"]]
   :plugins [[lein-ring "0.8.13"]]
   :profiles {:dev {:dependencies [[midje "1.3.0" :exclusions [org.clojure/clojure]]]}}
   :checksum-deps true

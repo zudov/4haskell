@@ -30,7 +30,7 @@
      :content
      (content-page
       {:heading "League sign-up"
-       :sub-heading (list "While the primary purpose of 4clojure.com is to teach Clojure \"by doing\", you may "
+       :sub-heading (list "While the primary purpose of 4Haskell.com is to teach Haskell \"by doing\", you may "
                           "also choose to compete for the shortest solution. This is affectionately known as "
                           (link-to "http://lbrandy.com/blog/2008/09/what-code-golf-taught-me-about-python/" "code golf")
                           ": the lower your score the better, get it? If you choose to participate, we'll score "

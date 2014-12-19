@@ -24,15 +24,15 @@
                                    :last-sent (if ok now last-sent)}))))
         (apply f args)))))
 
-(def clojure-hashtag (throttled (constantly "#clojure ")
+(def clojure-hashtag (throttled (constantly "#haskell ")
                                 (* 1000 60 60))) ; hourly
 
 (defn tweet-link [id status & [anchor-text]]
   (str "<a href=\"http://twitter.com/share?"
        "text=" (URLEncoder/encode status)
        "&url=" (URLEncoder/encode
-                (str "https://4clojure.com/problem/" id))
-       "&related=4clojure"
+                (str "https://4haskell.com/problem/" id))
+       "&related=4Haskell"
        "\">"
        (or anchor-text "Twitter")
        "</a>"))
@@ -52,7 +52,7 @@
                                  ["anonymous" nil])
         name (get-problem-title problem-num)
         text (str ";; " user-name possessive " solution to " name "\n"
-                  ";; https://4clojure.com/problem/" problem-num
+                  ";; https://4haskell.com/problem/" problem-num
                   "\n\n"
                   solution)]
     (try
@@ -65,7 +65,7 @@
                           (if (> (count title) 35)
                             (str "problem " id)
                             (str "\"" title "\"")))
-                        " on #4clojure " (clojure-hashtag) paste-url)]
+                        " on #4Haskell " (clojure-hashtag) paste-url)]
     (tweet-link id status-msg link-text)))
 
 (def-page share-page []

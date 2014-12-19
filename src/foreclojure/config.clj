@@ -13,4 +13,4 @@
   (def static-host (host :static))
   (def dynamic-host (host :dynamic))
   (def redirect-hosts (host :redirects))
-  (def canonical-host (or dynamic-host "www.4clojure.com")))
+  (def canonical-host (or dynamic-host "www.4haskell.com")))

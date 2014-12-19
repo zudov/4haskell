@@ -147,11 +147,11 @@
      user-set)))
 
 (def-page all-users-page []
-  {:title "All 4Clojure Users"
+  {:title "All 4Haskell Users"
    :content
    (content-page
-    {:heading "All 4Clojure Users"
-     :sub-heading (list [:span.contributor "*"] "&nbsp;" (link-to repo-url "4clojure contributor"))
+    {:heading "All 4Haskell Users"
+     :sub-heading (list [:span.contributor "*"] "&nbsp;" (link-to repo-url "4haskell contributor"))
      :main (generate-user-list [] "server-user-table")})})
 
 (def-page top-users-page []
@@ -164,7 +164,7 @@
        :heading-note [:span#all-users-link]
        :sub-heading (list (format-user-ranking user-ranking)
                           [:span.contributor "*"] "&nbsp;"
-                          (link-to repo-url "4clojure contributor"))
+                          (link-to repo-url "4haskell contributor"))
        :main (generate-user-list top-100 "user-table")})}))
 
 ;; TODO: this is snagged from problems.clj but can't be imported due to cyclic dependency, must refactor this out.

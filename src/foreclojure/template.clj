@@ -32,10 +32,10 @@
       [:body
        (when (:fork-banner attrs)
          [:div#github-banner [:a {:href repo-url
-                                  :alt "Fork 4Clojure on Github!"}]])
+                                  :alt "Fork 4Haskell on Github!"}]])
        [:div#top
         (link-to "/" [:img#logo {:src (static-url "images/4hs-logo.png")
-                                 :alt "4clojure.com"}])]
+                                 :alt "4haskell.com"}])]
        [:div#content
         [:div#menu
          (for [[link text & [tabbed]]
@@ -70,8 +70,8 @@
              [:span (link-to "/problems/submit" "Submit a Problem")])])
         [:div#content_body (:content attrs)]
         [:div#footer
-         "The content on 4clojure.com is available under the EPL v 1.0 license."
-         (let [email "team@4clojure.com"]
+         "The content on 4haskell.com is available under the EPL v 1.0 license."
+         (let [email "team@4haskell.com"]
            [:span
             [:a#contact {:href (str "mailto:" email)} "Contact us"]
             (str " (" email ")")])]

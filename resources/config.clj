@@ -1,18 +1,18 @@
 {:wrap-reload false
- :db-host "localhost"
+ :db-host "127.0.0.1"
  :db-name "4clojure"
  :db-user nil
  :db-pwd nil
  :jetty-port 8080
- :host "smtp.googlemail.com"
- :user "team@4clojure.com"
- :problem-submission true
+ :host "smtp.googlemail.com" ;; TODO: Setup email
+ :user "team@4haskell.com" ;; TODO: Setup email
+ :problem-submission false
  :advanced-user-count 50
  :pass ""
- :repo-url "https://github.com/4clojure/4clojure"
+ :repo-url "https://github.com/zudov/4haskell"
  :hosts {;; :static "static.4clojure.com"
          ;; :dynamic "www.4clojure.com"
-         :redirects ["4clojure.com"]}
+         :redirects ["4haskell.com"]}
  :golfing-active true
  :heartbeat nil ; set to, eg, [1 :hour] for periodic heap information on stdout
  ;; this list is just for bootstrapping - the real DB is authoritative

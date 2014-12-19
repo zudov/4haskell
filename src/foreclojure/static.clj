@@ -15,7 +15,7 @@
     df))
 
 (def-page welcome-page []
-  {:title "4clojure &ndash; Welcome!"
+  {:title "4Haskell &ndash; Welcome!"
    :fork-banner true
    :content
    [:div#welcome

@@ -64,7 +64,7 @@
   (page-attributes [this] nil))
 
 (let [defaults {:content nil
-                :title "4clojure"
+                :title "4Haskell"
                 :fork-banner false}]
   (defn rendering-info [attributes]
     (into defaults attributes)))
