@@ -25,21 +25,17 @@
         [:span#totalcounter (.format df (:total @solved-stats))] " problems solved and counting!"]]
     [:div
      [:h3 "What is 4Haskell?"]
-     [:p "4Haskell is a resource to help fledgling clojurians learn the language through interactive problems.  The first few problems are easy enough that even someone with no prior experience should find the learning curve forgiving.  See 'Help' for more information."]]
+     [:p "4Haskell is a resource to help fledgling haskellers learn the language through interactive problems.  4Haskell is not meant to teach you, instead it aims to give some practice.  See 'Help' for more information on solving problems."]]
 
     [:div
-     [:h3 "Is this site written in Clojure?"]
-     "Absolutely!  This site was created using a variety of open source Clojure (and Java) libraries.  In fact, the "
-     [:a {:href repo-url} "code for this site"]
-     " is itself open source.  Once you've mastered the language, feel free to contribute something back to the community."]
-    [:img {:src (static-url "images/PoweredMongoDBbeige50.png")
-           :alt "Powered by MongoDB"
-           :width 129 :height 61}]]})
+     [:h3 "Is this site written in Haskell?"]
+     "No.  This site is a fork of " [:a {:href "http://4clojure.com"} "4Clojure.com"] " and is written in Clojure"]
 
 (defn code-sample [& code]
   (list [:br]
         [:pre (join "\n" code)]
         [:br]))
+
 (defn solution-samples [& sols]
   (list [:br]
         (for [sol sols] [:li [:pre sol]])
