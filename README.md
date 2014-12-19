@@ -3,6 +3,8 @@
 An interactive problem website for learning Haskell 'by doing':
 [http://www.4haskell.com](http://www.4haskell.com). It's not ready yet but hopefully will be soon.
 
+The project is a fork of [4Clojure](https://github.com/4clojure/4clojure).
+
 ## Contributing
 
 Anyone interested in contributing should check out
@@ -13,7 +15,9 @@ on what to work on.
 
 * Download and install [leiningen](https://github.com/technomancy/leiningen).
 * Download and install [mongodb](http://www.mongodb.org/).
-* Use cabal to build [mueval](https://hackage.haskell.org/package/mueval) and make sure that mueval binaries are in your PATH
+* Use cabal to build [mueval](https://hackage.haskell.org/package/mueval)
+  * make sure that mueval binaries are in your PATH
+  * test that mueval works by running `mueval -t 10 -e "2+2"`
 
 * cd to the 4clojure project directory and run `lein deps`.
 * Start up your mongodb, if you don't have autostart:
