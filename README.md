@@ -3,6 +3,8 @@
 An interactive problem website for learning Haskell 'by doing':
 [http://www.4haskell.com](http://www.4haskell.com). It's not ready yet but hopefully will be soon.
 
+The project is a fork of [4Clojure](https://github.com/4clojure/4clojure).
+
 ## Contributing
 
 Anyone interested in contributing should check out
