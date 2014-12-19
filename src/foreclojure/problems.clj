@@ -189,7 +189,7 @@
   (let [tmp-module (get-random-string 10)
         tmp-file-name (str tmp-module ".hs")
         mueval-output (do (spit tmp-file-name (make-file-content code restricted tmp-module))
-                          (sh "mueval" "-i" "-n" "-l" tmp-file-name "-t" "10" "-e" expr))
+                          (sh "mueval" "-S" "-i" "-n" "-l" tmp-file-name "-t" "10" "-e" expr))
         {:keys [result time-limit error]} (read-mueval mueval-output)] ;; TODO Use binding form
     (delete-file tmp-file-name)
     (cond (= result "True") nil
