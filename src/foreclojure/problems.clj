@@ -296,7 +296,7 @@ Return a map, {:message, :error, :url, :num-tests-passed}."
       [:hr]
       [:table#tags
        [:tr [:td "Difficulty:"] [:td (or difficulty "N/A")]]
-       [:tr [:td "Topics:"]     [:td (s/join " " tags)]]]
+       [:tr [:td "Topics:"]     [:td (s/join ", " tags)]]]
       [:br]
       (when-not approved
         [:div#submitter "Submitted by: "
@@ -441,7 +441,7 @@ Return a map, {:message, :error, :url, :num-tests-passed}."
                title]]
              [:td.centered difficulty]
              [:td.centered
-              (s/join " " (map #(str "<span class='tag'>" % "</span>")
+              (s/join ", " (map #(str "<span class='tag'>" % "</span>")
                                tags))]
              [:td.centered user]
              [:td.centered (get-in @solved-stats [:solved-counts id] 0)]
@@ -563,7 +563,7 @@ Return a map, {:message, :error, :url, :num-tests-passed}."
                      :author user
                      :title title
                      :difficulty difficulty
-                     :tags (s/join " " tags)
+                     :tags (s/join ", " tags)
                      :restricted (s/join " " restricted)
                      :description description
                      :tests (s/join "\r\n\r\n" tests)}]
