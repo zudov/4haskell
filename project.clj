@@ -1,6 +1,6 @@
 (defproject foreclojure "2.0.0-rc2"
   :description "4Haskell - a website for practicing Haskell"
-  :dependencies [[org.clojure/clojure "1.4.0"]
+  :dependencies [[org.clojure/clojure "1.6.0"]
                  [compojure "1.1.0"]
                  [hiccup "1.0.0"]
                  [clojail "1.0.6"]
