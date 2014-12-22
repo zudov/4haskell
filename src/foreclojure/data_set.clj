@@ -49,6 +49,14 @@ __ = -- Write your code here"
            "__ 3  == 6"
            "__ 11 == 22"
            "__ 7  == 14"]})
+(def odd-number
+  {:title "Odd number"
+   :description "Write a function which tests if the number is odd."
+   :tags ["lists" "recursion"]
+   :restricted ["odd" "even" "mod" "div"]
+   :tests ["__ 2 == False"
+           "__ 3 == True"
+           "__ 10 == False"]})
 
 (def hello-world
   {:title "Hello World"
@@ -104,6 +112,7 @@ __ = -- Write your code here"
         ; Functions
         functions-intro
         functions-double
+        odd-number
         ; Strings
         hello-world
         ; Lists
