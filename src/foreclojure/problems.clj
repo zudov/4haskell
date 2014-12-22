@@ -4,6 +4,7 @@
             [clojure.string           :as      s]
             [ring.util.response       :as      response]
             [cheshire.core            :as      json]
+            [clj-http.client          :as      client]
             [clojure.data.xml         :refer   [element]])
   (:import  [org.apache.commons.mail  EmailException])
   (:use     [foreclojure.utils        :only    [from-mongo get-user get-solved login-link flash-msg flash-error row-class approver? can-submit? send-email image-builder if-user with-user as-int maybe-update escape-html]]
@@ -201,6 +202,14 @@
   (cond (empty? code) ["Empty input is not allowed."]
         (re-find #"(^| |\n|\t)import( |\n|\t)" code) ["Imports are not allowed."]))
 
+(defn mueval-cloud [code restricted tests]
+  (let [json-string (json/generate-string {:tests tests
+                                           :code code
+                                           :restricted (vec restricted)})
+        resp (client/post "http://localhost:4000/"
+               {:body json-string})]
+      (json/parse-string (:body resp))))
+
 (defn run-code
   "Run the specified code-string against the test cases for the problem with the
 specified id.
@@ -208,9 +217,13 @@ specified id.
 Return a map, {:message, :error, :url, :num-tests-passed}."
   [id code]
   (let [{:keys [tests restricted] :as problem} (get-problem id)
-          results (or (validate-code code)
-                      (for [test tests]
-                         (mueval code restricted test)))
+          cloud (mueval-cloud code restricted tests)
+          _ (prn cloud)
+          results (if (= (cloud "tag") "BadCode")
+                         [(cloud "contents")]
+                         (for [result (cloud "contents")]
+                            (cond (= (result "tag") "Passed") nil
+                                  (= (result "tag") "Failed") (result "contents"))))
           [passed [fail-msg]] (split-with nil? results)]
       (assoc (if fail-msg
                {:message "", :error fail-msg, :url *url*}
