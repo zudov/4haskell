@@ -17,14 +17,14 @@
 (def lists-intro
   {:title "Intro to Lists"
    :description "Lists can be constructed in place, either literally or using ranges."
-   :tags["elementary"]
+   :tags["elementary" "lists"]
    :tests ["__ == [1,2,3,4,5]"
            "__ == [1..5]"]})
 
 (def lists-cons
   {:title "Lists: (:)"
    :description "(:) takes an item and the list and returns a new list with an item prepended to the given list."
-   :tags["elementary"]
+   :tags["elementary" "lists"]
    :tests ["__ == 1 : [2,3]"
            "__ == 1 : 2 : [3]"
            "__ == 1 : 2 : 3 : []"]})
@@ -54,7 +54,7 @@ __ = -- Write your code here"
   {:title "Hello World"
    :description "Write a function which returns a personalized greeting."
 
-   :tags ["elementary"]
+   :tags ["elementary" "strings"]
    :tests ["__ \"Dave\" == \"Hello, Dave!\""
            "__ \"Jenn\" == \"Hello, Jenn!\""
            "__ \"Rhea\" == \"Hello, Rhea!\""]})
@@ -62,26 +62,26 @@ __ = -- Write your code here"
 (def lists-map
   {:title "Lists: map"
    :description "The map function takes two arguments: a function (f) and a list (xs).  Map returns a new sequence consisting of the result of applying f to each element of xs."
-   :tags["elementary"]
+   :tags["elementary" "lists"]
    :tests ["__ == map (5*) [1..3]"]})
 
 (def lists-filter
   {:title "Lists: filter"
    :description "The filter function takes two arguments: a predicate function (f) and a list (xs).  Filter returns a new sequence consisting of all the elements of xs for which (f item) returns True."
-   :tags ["elementary"]
+   :tags ["elementary" "lists"]
    :tests ["__ == filter (5>) [3..7]"]})
 
 (def length-of-a-list
     {:title "Length of a list"
      :description "Write a function which returns the amount of elements in the list."
      :tags ["easy" "list" "Prelude"]
-     :restricted ["length"]
+     :restricted ["length" "lists"]
      :tests [ "__ [2..6] == 5"
               "__ \"string is a list\" == 16"]})
 
 (def last-element
   {:title "Last Element"
-   :restricted ["last"]
+   :restricted ["last" "lists"]
    :description "Write a function which returns the last element in a sequence."
    :tags ["easy" "list" "Prelude"]
    :tests ["__ [1..5] == 5"
@@ -97,18 +97,23 @@ __ = -- Write your code here"
 ; be added.
 (def all-problems
   (map add-boilerplate-fields
-       (iterate inc 1) [true-is-true
-                        simple-math
-                        lists-intro
-                        lists-cons
-                        functions-intro
-                        functions-double
-                        hello-world
-                        lists-map
-                        lists-filter
-                        last-element
-                        length-of-a-list
-                       ]))
+       (iterate inc 1) 
+       [; Introduction
+        true-is-true
+        simple-math
+        ; Functions
+        functions-intro
+        functions-double
+        ; Strings
+        hello-world
+        ; Lists
+        lists-intro
+        lists-cons
+        lists-map
+        lists-filter
+        last-element
+        length-of-a-list
+       ]))
 
 ; Finally we load them
 (defn load-problems []
