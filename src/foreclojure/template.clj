@@ -1,12 +1,11 @@
 (ns foreclojure.template
   (:require [noir.session              :as   session])
   (:use     [hiccup.core               :only [html]]
-            [hiccup.page               :only [doctype]]
+            [hiccup.page               :only [doctype include-js include-css]]
             [hiccup.element            :only [javascript-tag link-to]]
             [foreclojure.config        :only [config repo-url]]
             [foreclojure.utils         :only [page-attributes rendering-info login-url approver? can-submit? codemirror-themes get-theme]]
-            [foreclojure.ring-utils    :only [static-url]]
-            [foreclojure.version-utils :only [css js]]))
+            [foreclojure.ring-utils    :only [static-url]]))
 
 
 
@@ -21,13 +20,20 @@
        [:title (:title attrs)]
        [:link {:rel "alternate" :type "application/atom+xml" :title "Atom" :href "/problems/rss"}]
        [:link {:rel "shortcut icon" :href (static-url "favicon2.ico")}]
-       (css "css/demo_table.css" "css/codemirror.css" "css/style.css")
-       (apply css (map #(format "css/theme/%s.css" %) codemirror-themes))
-       (js "vendor/script/jquery-1.5.2.min.js" "vendor/script/jquery.dataTables.min.js" "vendor/script/jquery.flipCounter.1.1.pack.js" "vendor/script/jquery.easing.1.3.js" "vendor/script/jquery.dataTables.fnSetFilteringDelay.js")
-       (js "script/codebox.js" "script/foreclojure.js")
-       (js "vendor/script/codemirror.js")
-       (js "vendor/script/codemirror-haskell.js")
-       (js "vendor/script/detectmobilebrowser.js")
+       (include-css "/css/demo_table.css"
+                    "/css/codemirror.css"
+                    "/css/style.css")
+       (apply include-css (map #(format "/css/theme/%s.css" %) codemirror-themes))
+       (include-js "/vendor/script/jquery-1.5.2.min.js"
+                   "/vendor/script/jquery.dataTables.min.js"
+                   "/vendor/script/jquery.flipCounter.1.1.pack.js"
+                   "/vendor/script/jquery.easing.1.3.js"
+                   "/vendor/script/jquery.dataTables.fnSetFilteringDelay.js"
+                   "/script/codebox.js"
+                   "/script/foreclojure.js"
+                   "/vendor/script/codemirror.js"
+                   "/vendor/script/codemirror-haskell.js"
+                   "/vendor/script/detectmobilebrowser.js")
        (javascript-tag (format "CodeBox.theme = '%s';" (get-theme)))]
       [:body
        (when (:fork-banner attrs)

@@ -13,11 +13,10 @@
             [foreclojure.settings       :only [settings-routes]]
             [foreclojure.register       :only [register-routes]]
             [foreclojure.golf           :only [golf-routes]]
-            [foreclojure.ring           :only [resources wrap-strip-trailing-slash wrap-url-as-file wrap-versioned-expiry split-hosts wrap-404 wrap-debug]]
+            [foreclojure.ring           :only [wrap-strip-trailing-slash split-hosts wrap-404 wrap-debug]]
             [foreclojure.users          :only [users-routes]]
             [foreclojure.config         :only [config]]
             [foreclojure.social         :only [social-routes]]
-            [foreclojure.version        :only [version-routes]]
             [foreclojure.graphs         :only [graph-routes]]
             [foreclojure.mongo          :only [prepare-mongo]]
             [foreclojure.ring-utils     :only [wrap-request-bindings]]
@@ -31,12 +30,6 @@
 
 (def ^:dynamic *block-server* false)
 
-(defroutes resource-routes
-  (-> (resources "/*")
-      (wrap-url-as-file)
-      (wrap-file-info)
-      (wrap-versioned-expiry)))
-
 (def dynamic-routes
   (-> (routes (GET "/" [] (welcome-page))
               login-routes
@@ -45,7 +38,6 @@
               users-routes
               static-routes
               social-routes
-              version-routes
               graph-routes
               api-routes
               datatable-routes
@@ -73,10 +65,10 @@
                 "</a>")}))
 
 (def host-handlers (reduce into
-                           {:default (routes dynamic-routes resource-routes)}
+                           {:default (routes dynamic-routes (route/resources "/"))}
                            [(for [host config/redirect-hosts]
                               [host redirect-routes])
-                            (for [[host route] [[config/static-host resource-routes]
+                            (for [[host route] [[config/static-host (route/resources "/")]
                                                 [config/dynamic-host dynamic-routes]]
                                   :when host]
                               [host route])]))
