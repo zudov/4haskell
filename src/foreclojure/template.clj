@@ -19,7 +19,10 @@
       [:head
        [:title (:title attrs)]
        [:link {:rel "alternate" :type "application/atom+xml" :title "Atom" :href "/problems/rss"}]
-       [:link {:rel "shortcut icon" :href (static-url "favicon2.ico")}]
+       [:link {:rel "shortcut icon"
+               :type "image/vnd.microsoft.icon"
+               :sizes "16x16 24x24 32x32 48x48 64x64"
+               :href (static-url "favicon.ico")}]
        (include-css "/css/demo_table.css"
                     "/css/codemirror.css"
                     "/css/style.css")
