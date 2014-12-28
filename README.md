@@ -47,8 +47,11 @@ on what to work on.
 * [Ara Jeknavorian](https://github.com/arajek) (arajek)
 
 
-Problem inspirations:
+Problem sources and inspirations:
 
+ * [Learn you a haskell](http://learnyouahaskell.com)
+ * [FP101x](https://courses.edx.org/courses/DelftX/FP101x/3T2014/info)
+ * [Typeclassopedia](https://www.haskell.org/haskellwiki/Typeclassopedia#Functor)
  * Aaron Bedra's [Clojure Koans](https://github.com/functional-koans/clojure-koans)
  * [Ninety-Nine Lisp Problems](http://www.ic.unicamp.br/~meidanis/courses/mc336/2006s2/funcional/L-99_Ninety-Nine_Lisp_Problems.html)
  * [Project Euler](http://www.projecteuler.net)

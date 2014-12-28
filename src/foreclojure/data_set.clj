@@ -95,6 +95,82 @@ __ = -- Write your code here"
    :tests ["__ [1..5] == 5"
            "__ [3,2,1] == 1"
            "__ \"haskell\" == 'l'"]})
+(def null
+  {:title "Null"
+   :restricted ["null" "length"]
+   :description "Check if the list is empty. If I was you I would use pattern matching."
+   :tags ["easy" "list" "Prelude" "Pattern-match"]
+   :tests ["__ []   == True"
+           "__ [1]  == False"
+           "__ [[]] == False -- List with an empty list is not empty itself"]})
+
+(def take_
+  {:title "Take'em"
+   :restricted ["take" "splitAt"]
+   :description "Take first n elements from the list. If I was you I would use pattern mathing and recursion."
+   :tags ["easy" "list" "Prelude" "pattern-match" "recursion"]
+   :tests ["__ 4 \"hello\" == \"hell\""
+           "__ 0 [1..] == []"
+           "__ 3 [1..] == [1,2,3]"]})
+
+(def drop_
+  {:title "Drop'em"
+   :restricted ["drop" "splitAt"]
+   :description "Drop n first elements from the list and return the rest of it. I would use pattern matching and recursion."
+   :tags ["easy" "list" "Prelude" "pattern-match" "recursion"]
+   :tests ["__ 3 [1..5] == [4,5]"
+           "__ 1 \"4haskell\" == \"haskell\""]})
+
+(def sum
+  {:title  "Sum'em all"
+   :restricted ["sum"]
+   :description "Find the sum of numbers in the list. This is a perfect use-case for folding abstraction, it would allow you to solve many similar problems using the same pattern. If you aren't bold with fold take a look <a href=http://learnyouahaskell.com/higher-order-functions#folds>here</a>."
+   :tags ["easy" "list" "Prelude" "fold" "higher-order"]
+   :tests ["__ [1..3] == 6"
+           "__ [1..5] == 15"
+           "__ [] == 0"]})
+
+(def product
+  {:title  "What's you product?"
+   :restricted ["product"]
+   :description "Find the product of numbers in the list. This is a perfect use-case for folding abstraction, it would allow you to solve many similar problems using the same pattern. If you aren't bold with fold take a look <a href=http://learnyouahaskell.com/higher-order-functions#folds>here</a>."
+   :tags ["easy" "list" "Prelude" "fold" "higher-order"]
+   :tests ["__ [1..3] == 6"
+           "__ [1..5] == 120"
+           "__ [] == 1 -- If you are confused read about 'empty product'"]})
+
+(def elem
+  {:title "Are you there?"
+   :restricted ["elem"]
+   :description "Check if the element is present in the list. I would use pattern match, guards and recursion."
+   :tags ["easy" "list" "Prelude" "recursion" "pattern-match"]
+   :tests ["__ 4 [1,2,3] == False"
+           "__ 3 [1,2,3] == True"
+           "__ 5 [1..] == True"]})
+
+(def coordinate-grid
+  {:title "Coordinate grid comprehension"
+   :description "Define a function which takes integers m and n and returns a list of all coordinate pairs on an [0..m] × [0..n] rectangular grid. I would use list comprehension"
+   :tags ["easy" "list-comprehension"]
+   :tests ["__ 1 1 == [(0,0), (0,1), (1,0), (1,1)]"
+           "__ 1 2 == [(0,0), (0,1), (0,2), (1,0), (1,1), (1,2)]"]})
+
+(def functor-class "class Functor f where
+    fmap :: (a -> b) -> f a -> f b\n\n")
+
+(def functor-list
+  {:title "Functor []"
+   :description "Define a functor instance for []"
+   :defs (str functor-class "instance Functor [] where
+    fmap = undefined -- feel free to simply use map")
+   :restricted ["Functor(..)"]
+   :difficulty "intermediate"
+   :tags ["typeclasses", "functor", "list"]
+   :tests ["fmap (+1) [1..5] == [2..6]"
+           "fmap id [1..5] == [1..5]"
+           "fmap ((+1) . (+2)) [1..5] == (fmap (+1) . fmap (+2)) [1..5]"]})
+   
+
 
 (defn add-boilerplate-fields [n problem]
   (assoc problem :_id n
@@ -120,8 +196,19 @@ __ = -- Write your code here"
         lists-cons
         lists-map
         lists-filter
-        last-element
+        coordinate-grid
+        ; Prelude
+        null
         length-of-a-list
+        last-element
+        take_
+        drop_
+        sum
+        product
+        elem
+        ; Typeclassopedia
+        ;; Functor
+        functor-list
        ]))
 
 ; Finally we load them

@@ -86,7 +86,7 @@
                    "last :: [a] -> a"
                    "last (x:[]) = x"
                    "last (x:xs) = last xs")
-      "Of course you are free to define multiple functions if you want so."
+      "You are free to define other functions, data types, typeclasses, instances if you need it."
       [:br][:br]
       "You should now be ready to start solving problems.  Happy coding!"]]
     ]})
