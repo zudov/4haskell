@@ -6,7 +6,12 @@
   {:title "Nothing but the Truth"
    :description "This is a haskell expression. Enter a value which will make the expression evaluate to True.  Don't over think it!  If you are confused, see the <a href='/directions'>getting started</a> page.  Hint: True is equal to True."
    :tags ["elementary"]
-   :tests ["__ == True"]})
+   :tests ["__ == True"]
+   :solutions
+     {:right ["True" "__ = True"]
+      :wrong ["False"]
+      :wont-compile ["true" "1"]}
+   })
 
 (def simple-math
   {:title "Simple Math"
@@ -48,7 +53,13 @@ __ = -- Write your code here"
    :tests ["__ 2  == 4"
            "__ 3  == 6"
            "__ 11 == 22"
-           "__ 7  == 14"]})
+           "__ 7  == 14"]
+   :solutions
+     {:right ["(*2)" "__ = (*2)" "(\\x -> x * 2)"]
+      :wrong ["(*3)"]
+      :wont-compile ["**3"]
+     }
+  })
 (def odd-number
   {:title "Odd number"
    :description "Write a function which tests if the number is odd."
@@ -164,56 +175,65 @@ __ = -- Write your code here"
    :defs (str functor-class "instance Functor [] where
     fmap = undefined -- feel free to simply use map")
    :restricted ["Functor(..)"]
-   :difficulty "intermediate"
+   :difficulty "easy"
    :tags ["typeclasses", "functor", "list"]
    :tests ["fmap (+1) [1..5] == [2..6]"
            "fmap id [1..5] == [1..5]"
-           "fmap ((+1) . (+2)) [1..5] == (fmap (+1) . fmap (+2)) [1..5]"]})
+           "fmap ((+1) . (+2)) [1..5] == (fmap (+1) . fmap (+2)) [1..5]"]
+   :solutions
+     {:right [(str functor-class "instance Functor [] where\n    fmap = map\n\n__ = undefined")]
+      :wrong []
+      :wont-compile []
+     }
+   })
    
 
 
 (defn add-boilerplate-fields [n problem]
-  (assoc problem :_id n
-                 :times-solved 0
-                 :approved true))
+  (-> problem
+      (dissoc :solutions)
+      (assoc :_id n
+             :times-solved 0
+             :approved true)))
 
 ; Here the problems can be arranged in specific order. New problems can easily
 ; be added.
 (def all-problems
-  (map add-boilerplate-fields
-       (iterate inc 1) 
-       [; Introduction
-        true-is-true
-        simple-math
-        ; Functions
-        functions-intro
-        functions-double
-        odd-number
-        ; Strings
-        hello-world
-        ; Lists
-        lists-intro
-        lists-cons
-        lists-map
-        lists-filter
-        coordinate-grid
-        ; Prelude
-        null
-        length-of-a-list
-        last-element
-        take_
-        drop_
-        sum
-        product
-        elem
-        ; Typeclassopedia
-        ;; Functor
-        functor-list
-       ]))
+  [; Introduction
+   true-is-true
+   simple-math
+   ; Functions
+   functions-intro
+   functions-double
+   odd-number
+   ; Strings
+   hello-world
+   ; Lists
+   lists-intro
+   lists-cons
+   lists-map
+   lists-filter
+   coordinate-grid
+   ; Prelude
+   null
+   length-of-a-list
+   last-element
+   take_
+   drop_
+   sum
+   product
+   elem
+   ; Typeclassopedia
+   ;; Functor
+   functor-list
+  ])
+
+(def all-problems-to-insert
+  (map add-boilerplate-fields (iterate inc 1) all-problems))
 
 ; Finally we load them
 (defn load-problems []
   (do (insert! :seqs
               {:_id "problems"
-               :seq (count all-problems)})
-      (last (map #(insert! :problems %) all-problems))))
+               :seq (count all-problems-to-insert)})
+      (last (map #(insert! :problems %) all-problems-to-insert))))
