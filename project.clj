@@ -18,7 +18,8 @@
                  [commons-lang "2.6"]
                  [org.apache.commons/commons-email "1.2"]
                  [org.clojure/data.xml "0.0.5"]
-                 [com.novemberain/langohr "3.0.0-rc2"]]
+                 [com.novemberain/langohr "3.0.0-rc2"]
+                 [clj-http "0.9.2"]]
   :plugins [[lein-ring "0.8.13"]]
   :profiles {:dev {:dependencies [[midje "1.3.0" :exclusions [org.clojure/clojure]]]}}
   :checksum-deps true
