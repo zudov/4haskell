@@ -178,16 +178,12 @@ __ = -- Write your code here"
    :difficulty "easy"
    :tags ["typeclasses", "functor", "list"]
    :tests ["fmap (+1) [1..5] == [2..6]"
-           "fmap id [1..5] == [1..5]"
-           "fmap ((+1) . (+2)) [1..5] == (fmap (+1) . fmap (+2)) [1..5]"]
+           "fmap id [1..5] == [1..5] -- First (identity) functor law"
+           "fmap ((+1) . (+2)) [1..5] == (fmap (+1) . fmap (+2)) [1..5] -- Second (composition) functor law"]
    :solutions
-     {:right [(str functor-class "instance Functor [] where\n    fmap = map\n\n__ = undefined")]
-      :wrong []
-      :wont-compile []
+     {:right [(str functor-class "instance Functor [] where\n    fmap = map")]
      }
    })
-   
-
 
 (defn add-boilerplate-fields [n problem]
   (-> problem

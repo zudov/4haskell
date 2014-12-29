@@ -161,48 +161,7 @@
     (session/put! :code [_id code])
     {:message message, :error "",  :url (str "/problem/" _id)}))
 
-(defn read-mueval [{:keys [out exit err]}]
-  (let [[expression expr-type result] (s/split-lines out)]
-    (cond (= exit 0) {:expression expression :type expr-type :result result}
-          (= exit 1) (if (= err "mueval-core: Time limit exceeded\n")
-                                 {:time-limit ()}
-                                 {:error out})
-          (= exit 137) {:time-limit ()} ;; FIXME: I am not sure if 137 only mean exceeded time limit
-          :else (do (println "Unhandled exit code") ;; TODO: Logging
-                    {:error err}))))
-
-(def alpha "ABCDEFGHIJKLMNOPQRSTUVWXYZ")
-(defn get-random-string [length]
-    (apply str (repeatedly length #(rand-nth alpha))))
-
-(defn add-blank-def [code]
-  (if (re-find #"__" code)
-      code
-      (str "__ = " code)))
-
-(defn make-file-content [code restricted module-name]
-  (s/join "\n" (map #(apply str %)
-                    [["module " module-name " where"]
-                     ["import Prelude hiding (" (s/join "," restricted) ")"]
-                     [(add-blank-def code)]])))
-
-(defn mueval [code restricted expr]
-  (let [tmp-module (get-random-string 10)
-        tmp-file-name (str tmp-module ".hs")
-        mueval-output (do (spit tmp-file-name (make-file-content code restricted tmp-module))
-                          (sh "mueval" "-S" "-i" "-n" "-l" tmp-file-name "-t" "10" "-e" expr))
-        {:keys [result time-limit error]} (read-mueval mueval-output)] ;; TODO Use binding form
-    (delete-file tmp-file-name)
-    (cond (= result "True") nil
-          (= result "False") "You failed some unit tests"
-          time-limit "Evaluation exceeded the time limit"
-          :else error)))
-
-(defn validate-code [code]
-  (cond (empty? code) ["Empty input is not allowed."]
-        (re-find #"(^| |\n|\t)import( |\n|\t)" code) ["Imports are not allowed."]))
-
-(defn mueval-cloud [code restricted tests]
+(defn mueval [code restricted tests]
   (let [json-string (json/generate-string {:tests tests
                                            :code code
                                            :restricted (vec restricted)})
@@ -217,7 +176,7 @@ specified id.
 Return a map, {:message, :error, :url, :num-tests-passed}."
   [id code]
   (let [{:keys [tests restricted] :as problem} (get-problem id)
-          cloud (mueval-cloud code restricted tests)
+          cloud (mueval code restricted tests)
           _ (prn cloud)
           results (if (= (cloud "tag") "BadCode")
                          [(cloud "contents")]
