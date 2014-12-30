@@ -30,6 +30,7 @@ var CodeBox = {
     this.editor = CodeMirror.fromTextArea(this.element[0],
                                          {mode: 'haskell',
                                           lineNumbers: true,
+                                          firstLineNumber: 3,
                                           theme: this.theme});
     $(this.editor.getWrapperElement()).addClass('codebox');
     $('#theme').live('change', function() {

@@ -281,13 +281,13 @@ Return a map, {:message, :error, :url, :num-tests-passed}."
          [:div#restrictions
           [:u "Special Restrictions"] [:br]
           (map (partial vector :li) restricted)])]
-      [:div
        [:div.message
         [:span#message-text (session/flash-get :message)]
-        [:span#error-message-text.error (session/flash-get :error)]]
-       [:div#golfscore
-        (render-golf-score)]]
-      (form-to {:id "run-code"} [:post *url*]
+        [:pre#error-message-text.error.no-hl (session/flash-get :error)]]
+       ;[:div#golfscore
+        ;(render-golf-score)]
+      [:div.submit-box
+       (form-to {:id "run-code"} [:post *url*]
         [:br]
         [:br]
         [:p.instruct "Code which fills in the blank or defines a function \"__\":"]
@@ -308,7 +308,7 @@ Return a map, {:message, :error, :url, :num-tests-passed}."
         (when-not approved
           [:span [:button.large {:id "reject-button"} "Reject"]
            [:button.large {:id "edit-button"} "Edit"]
-           [:button.large {:id "approve-button"} "Approve"]]))]}))
+           [:button.large {:id "approve-button"} "Approve"]]))]]}))
 
 (defn problem-page [id]
   (let [error #(flash-error "/problems" %)

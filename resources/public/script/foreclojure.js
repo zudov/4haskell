@@ -244,7 +244,7 @@ function updateProblemCount() {
 }
 
 function highlightPreElements() {
-  $('pre').each(function() {
+  $('pre').not('.no-hl').each(function() {
     var el = $(this);
     // Don't show line numbers if current element is test or it is an example on help page.
     var hasLineNumbers = !(el.hasClass('test') || el.parents('#getting-started').length > 0);
