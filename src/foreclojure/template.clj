@@ -53,6 +53,7 @@
                 ["/users" "Top Users"]
                 ["/directions" "Help"]
                 ["http://tryhaskell.org" "REPL" true]
+                ["http://haskell.org/hoogle" "Hoogle" true]
                 ["https://downloads.haskell.org/~ghc/7.6-latest/docs/html/libraries/base-4.6.0.1/Prelude.html" "Docs" true]]]
            [:a.menu (assoc (when tabbed {:target "_blank"})
                       :href link)
