@@ -381,6 +381,14 @@ div.syntaxhighlighter {
   padding: 4px;
 }
 
+div#info{
+    float: right;
+}
+
+div#info div.title {
+    font-size: 20px;
+}
+
 div#restrictions {
    list-style-type: none;
    border-style: dashed;
@@ -392,9 +400,20 @@ div#restrictions {
    margin-left: 15px;
    padding: 10px;
    color: red;
-   float: right;
    font-size: 16px;
 }
+div#links {
+   list-style-type: none;
+   border-style: dashed;
+   border-width: normal;
+   margin-right: 45px;
+   margin-bottom: 15px;
+   margin-top: 15px;
+   margin-left: 15px;
+   padding: 10px;
+   font-size: 12px;
+}
+
 
 #contact {
    color: #FFFFFF;

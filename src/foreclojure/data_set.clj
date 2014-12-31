@@ -1,6 +1,21 @@
 (ns foreclojure.data-set
   (:use [somnium.congomongo]))
 
+;; Short cuts for linking to learning materials
+(defn rwh [page section] ;; Real Word Haskell
+  (str "http://book.realworldhaskell.org/read/" page ".html#" section))
+
+(defn lyah ;; Learn you a haskell
+  ([page] (str "http://learnyouahaskell.com/" page))
+  ([page section] (str "http://learnyouahaskell.com/" page "#" section)))
+
+(defn prelude [section] ;; Hackage docs for Prelude
+  (str "https://downloads.haskell.org/~ghc/7.6-latest/docs/html/libraries/base-4.6.0.1/Prelude.html"
+       "#" section))
+
+(defn typeclassopedia [section]
+  (str "https://www.haskell.org/haskellwiki/Typeclassopedia#" section))
+
 ; Problems defenitions
 (def true-is-true
   {:title "Nothing but the Truth"
@@ -12,6 +27,7 @@
      {:right ["True" "__ = True"]
       :wrong ["False"]
       :wont-compile ["true" "1"]}
+   :links {"Getting Started" "/directions"}
    })
 
 (def simple-math
@@ -19,15 +35,19 @@
    :description "The precedence of mathematical operators is the same as you expect it."
    :tags []
    :difficulty "elementary"
-   :tests ["__ == 10 - 2 * 3"]})
+   :tests ["__ == 10 - 2 * 3"]
+   :links {"RWH: Simple arithmetic" (rwh "getting-started" "starting.calc.arithmetic")}})
 
 (def lists-intro
-  {:title "Intro to Lists"
+  {:title "An intro to lists"
    :description "Lists can be constructed in place, either literally or using ranges."
    :tags["lists"]
    :difficulty "elementary"
    :tests ["__ == [1,2,3,4,5]"
-           "__ == [1..5]"]})
+           "__ == [1..5]"]
+   :links {"LYAH: An intro to lists" (lyah "starting-out" "an-intro-to-lists")
+           "LYAH: Texas Ranges" (lyah "starting-out" "texas-ranges")
+           "Hackage: Prelude" (prelude "g:11")}})
 
 (def lists-cons
   {:title "Lists: (:)"
@@ -36,7 +56,9 @@
    :difficulty "elementary"
    :tests ["__ == 1 : [2,3]"
            "__ == 1 : 2 : [3]"
-           "__ == 1 : 2 : 3 : []"]})
+           "__ == 1 : 2 : 3 : []"]
+   :links {"LYAH: An intro to lists" (lyah "starting-out" "an-intro-to-lists")
+           "Hackage: Prelude" (prelude "g:11")}})
 
 (def functions-intro
   {:title "Intro to Functions"
@@ -49,7 +71,9 @@ __ = -- Write your code here"
    :tests ["__ == (\\x -> 5 + x) 3"
            "__ == (5+) 3"
            "__ == addFive 3 -- Function addFive is defined below"
-           ]})
+           ]
+   :links {"LYAH: Baby's first functions" (lyah "starting-out" "babys-first-functions")
+           "LYAH: Lambdas" (lyah "higher-order-functions" "lambdas")}})
 
 (def functions-double
   {:title "Double Down"
@@ -65,48 +89,60 @@ __ = -- Write your code here"
       :wrong ["(*3)"]
       :wont-compile ["**3"]
      }
+   :links {"LYAH: Baby's first functions" (lyah "starting-out" "babys-first-functions")}
   })
 (def odd-number
   {:title "Odd number"
-   :description "Write a function which tests if the number is odd."
+   :description "Write a function which tests if the number is odd. I would use recursion and pattern matching."
    :tags ["lists" "recursion"]
    :difficulty "easy"
    :restricted ["odd" "even" "mod" "div"]
    :tests ["__ 2 == False"
            "__ 3 == True"
-           "__ 10 == False"]})
+           "__ 10 == False"]
+   :links {"LYAH: Pattern matching" (lyah "syntax-in-functions" "pattern-matching")
+           "LYAH: Recursion" (lyah "recursion")}})
 
 (def hello-world
   {:title "Hello World"
-   :description "Write a function which returns a personalized greeting."
+   :description "Write a function which returns a personalized greeting. Remember, strings are lists."
    :tags ["strings"]
    :difficulty "elementary"
    :tests ["__ \"Dave\" == \"Hello, Dave!\""
            "__ \"Jenn\" == \"Hello, Jenn!\""
-           "__ \"Rhea\" == \"Hello, Rhea!\""]})
+           "__ \"Rhea\" == \"Hello, Rhea!\""]
+   :links {"LYAH: An intro to lists" (lyah "starting-out" "an-intro-to-lists")
+           "Hackage: Prelude" (prelude "g:11")}})
 
 (def lists-map
   {:title "Lists: map"
-   :description "The map function takes two arguments: a function (f) and a list (xs).  Map returns a new sequence consisting of the result of applying f to each element of xs."
+   :description "The map function takes two arguments: a function f and a list xs.  Map returns a new list consisting of the result of applying f to each element of xs."
    :tags ["lists"]
    :difficulty "elementary"
-   :tests ["__ == map (5*) [1..3]"]})
+   :tests ["__ == map (5*) [1..3]"]
+   :links {"LYAH: An intro to lists" (lyah "starting-out" "an-intro-to-lists")
+           "Hackage: Prelude" (prelude "g:11")}})
 
 (def lists-filter
   {:title "Lists: filter"
    :description "The filter function takes two arguments: a predicate function (f) and a list (xs).  Filter returns a new sequence consisting of all the elements of xs for which (f item) returns True."
    :tags ["lists"]
    :difficulty "elementary"
-   :tests ["__ == filter (5>) [3..7]"]})
+   :tests ["__ == filter (5>) [3..7]"]
+   :links {"LYAH: An intro to lists" (lyah "starting-out" "an-intro-to-lists")
+           "Hackage: Prelude" (prelude "g:11")}})
 
 (def length-of-a-list
     {:title "Length of a list"
-     :description "Write a function which returns the amount of elements in the list."
+     :description "Write a function which returns the amount of elements in the list. If you speak folds, use it, another good (but less expressive) method is pattern match with recursion"
      :tags ["list" "Prelude"]
      :difficulty "easy" 
      :restricted ["length" "lists"]
      :tests [ "__ [2..6] == 5"
-              "__ \"string is a list\" == 16"]})
+              "__ \"string is a list\" == 16"]
+   :links {"LYAH: Pattern matching" (lyah "syntax-in-functions" "pattern-matching")
+           "LYAH: Recursion" (lyah "recursion")
+           "LYAH: Only folds and horses" (lyah "higher-order-functions" "folds")}})
 
 (def last-element
   {:title "Last Element"
@@ -116,7 +152,9 @@ __ = -- Write your code here"
    :difficulty "easy" 
    :tests ["__ [1..5] == 5"
            "__ [3,2,1] == 1"
-           "__ \"haskell\" == 'l'"]})
+           "__ \"haskell\" == 'l'"]
+   :links {"LYAH: Pattern matching" (lyah "syntax-in-functions" "pattern-matching")
+           "LYAH: Recursion" (lyah "recursion")}})
 (def null
   {:title "Null"
    :restricted ["null" "length"]
@@ -125,17 +163,20 @@ __ = -- Write your code here"
    :difficulty "easy" 
    :tests ["__ []   == True"
            "__ [1]  == False"
-           "__ [[]] == False -- List with an empty list is not empty itself"]})
+           "__ [[]] == False -- List with an empty list is not empty itself"]
+   :links {"LYAH: Pattern matching" (lyah "syntax-in-functions" "pattern-matching")}})
 
 (def take_
   {:title "Take'em"
    :restricted ["take" "splitAt"]
-   :description "Take first n elements from the list. If I was you I would use pattern mathing and recursion."
+   :description "Take first n elements from the list. If I was you I would use pattern matching and recursion."
    :tags ["list" "Prelude" "pattern-match" "recursion"]
    :difficulty "easy" 
    :tests ["__ 4 \"hello\" == \"hell\""
            "__ 0 [1..] == []"
-           "__ 3 [1..] == [1,2,3]"]})
+           "__ 3 [1..] == [1,2,3]"]
+   :links {"LYAH: Pattern matching" (lyah "syntax-in-functions" "pattern-matching")
+           "LYAH: Recursion" (lyah "recursion")}})
 
 (def drop_
   {:title "Drop'em"
@@ -144,27 +185,31 @@ __ = -- Write your code here"
    :tags ["list" "Prelude" "pattern-match" "recursion"]
    :difficulty "easy" 
    :tests ["__ 3 [1..5] == [4,5]"
-           "__ 1 \"4haskell\" == \"haskell\""]})
+           "__ 1 \"4haskell\" == \"haskell\""]
+   :links {"LYAH: Pattern matching" (lyah "syntax-in-functions" "pattern-matching")
+           "LYAH: Recursion" (lyah "recursion")}})
 
 (def sum
   {:title  "Sum'em all"
    :restricted ["sum"]
-   :description "Find the sum of numbers in the list. This is a perfect use-case for folding abstraction, it would allow you to solve many similar problems using the same pattern. If you aren't bold with fold take a look <a href=http://learnyouahaskell.com/higher-order-functions#folds>here</a>."
+   :description "Find the sum of numbers in the list. This is a perfect use-case for folding abstraction, it would allow you to solve many similar problems using the same pattern."
    :tags ["list" "Prelude" "fold" "higher-order"]
    :difficulty "easy" 
    :tests ["__ [1..3] == 6"
            "__ [1..5] == 15"
-           "__ [] == 0"]})
+           "__ [] == 0"]
+   :links {"LYAH: Only folds and horses" (lyah "higher-order-functions" "folds")}})
 
 (def product
   {:title  "What's you product?"
    :restricted ["product"]
-   :description "Find the product of numbers in the list. This is a perfect use-case for folding abstraction, it would allow you to solve many similar problems using the same pattern. If you aren't bold with fold take a look <a href=http://learnyouahaskell.com/higher-order-functions#folds>here</a>."
+   :description "Find the product of numbers in the list. This is a perfect use-case for folding abstraction, it would allow you to solve many similar problems using the same pattern."
    :tags ["list" "Prelude" "fold" "higher-order"]
    :difficulty "easy" 
    :tests ["__ [1..3] == 6"
            "__ [1..5] == 120"
-           "__ [] == 1 -- If you are confused read about 'empty product'"]})
+           "__ [] == 1 -- If you are confused read about 'empty product'"]
+   :links {"LYAH: Only folds and horses" (lyah "higher-order-functions" "folds")}})
 
 (def elem
   {:title "Are you there?"
@@ -174,15 +219,19 @@ __ = -- Write your code here"
    :difficulty "easy" 
    :tests ["__ 4 [1,2,3] == False"
            "__ 3 [1,2,3] == True"
-           "__ 5 [1..] == True"]})
+           "__ 5 [1..] == True"]
+   :links {"LYAH: Pattern matching" (lyah "syntax-in-functions" "pattern-matching")
+           "LYAH: Recursion" (lyah "recursion")
+           "LYAH: Guards, guards!" (lyah "syntax-in-functions" "guards-guards")}})
 
 (def coordinate-grid
   {:title "Coordinate grid comprehension"
    :description "Define a function which takes integers m and n and returns a list of all coordinate pairs on an [0..m] × [0..n] rectangular grid. I would use list comprehension"
-   :tags ["list-comprehension"]
+   :tags ["lists" "list-comprehension"]
    :difficulty "easy" 
    :tests ["__ 1 1 == [(0,0), (0,1), (1,0), (1,1)]"
-           "__ 1 2 == [(0,0), (0,1), (0,2), (1,0), (1,1), (1,2)]"]})
+           "__ 1 2 == [(0,0), (0,1), (0,2), (1,0), (1,1), (1,2)]"]
+   :links {"LYAH: I'm a list comprehension" (lyah "starting-out" "im-a-list-comprehension")}})
 
 (def functor-class "class Functor f where
     fmap :: (a -> b) -> f a -> f b\n\n")
@@ -199,7 +248,8 @@ __ = -- Write your code here"
            "fmap id [1..5] == [1..5] -- First (identity) functor law"
            "fmap ((+1) . (+2)) [1..5] == (fmap (+1) . fmap (+2)) [1..5] -- Second (composition) functor law"]
    :solutions {:right [(str functor-class "instance Functor [] where\n    fmap = map")]}
-   })
+   :links {"LYAH: The Functor typeclass" (lyah "making-our-own-types-and-typeclasses" "the-functor-typeclass")
+           "Typeclassopedia: Functor" (typeclassopedia "Functor")}})
 
 (def functor-maybe
   {:title "Functor Maybe"
@@ -212,7 +262,8 @@ __ = -- Write your code here"
            "fmap (+1) Nothing  == Nothing"]
    :solutions
      {:right [(str functor-class "instance Functor Maybe where\n    fmap f (Just x) = Just $ f x\n    fmap f Nothing = Nothing")]}
-   })
+   :links {"LYAH: The Functor typeclass" (lyah "making-our-own-types-and-typeclasses" "the-functor-typeclass")
+           "Typeclassopedia: Functor" (typeclassopedia "Functor")}})
 
 (def functor-tree
   {:title "Functor Tree"
@@ -231,14 +282,16 @@ instance Functor ITree where
 instance Functor Tree where
     fmap f (Leaf x) = Leaf (f x)
     fmap f (Node xs) = Node $ fmap (fmap f) xs"]}
-   })
+   :links {"LYAH: The Functor typeclass" (lyah "making-our-own-types-and-typeclasses" "the-functor-typeclass")
+           "Typeclassopedia: Functor" (typeclassopedia "Functor")}})
 
 (defn add-boilerplate-fields [n problem]
   (-> problem
       (dissoc :solutions)
       (assoc :_id n
              :times-solved 0
-             :approved true)))
+             :approved true)
+      (update-in [:tags] sort)))
 
 ; Here the problems can be arranged in specific order. New problems can easily
 ; be added.
@@ -250,14 +303,14 @@ instance Functor Tree where
    functions-intro
    functions-double
    odd-number
-   ; Strings
-   hello-world
    ; Lists
    lists-intro
    lists-cons
    lists-map
    lists-filter
    coordinate-grid
+   ; Strings
+   hello-world
    ; Prelude
    null
    length-of-a-list

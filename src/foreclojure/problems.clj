@@ -248,7 +248,7 @@ Return a map, {:message, :error, :url, :num-tests-passed}."
 
 (def-page code-box [id]
   (let [{:keys [_id title difficulty tags description
-                restricted tests approved user defs]}
+                restricted links tests approved user defs]}
         (get-problem (Integer. id)),
         title (str (when-not approved
                      "Unapproved: ")
@@ -277,10 +277,16 @@ Return a map, {:message, :error, :url, :num-tests-passed}."
       [:div#prob-desc
        description[:br]
        (render-test-cases tests)
-       (when restricted
-         [:div#restrictions
-          [:u "Special Restrictions"] [:br]
-          (map (partial vector :li) restricted)])]
+       (when (or links restricted)
+         [:div#info
+          (when links
+            [:div#links
+              [:div.title "Reading List"]
+              (map (fn [[title link]] [:li [:a {:href link} title]]) links)])
+          (when restricted
+            [:div#restrictions
+              [:u "Special Restrictions"] [:br]
+              (map (partial vector :li) restricted)])])]
        [:div.message
         [:span#message-text (session/flash-get :message)]
         [:pre#error-message-text.error.no-hl (session/flash-get :error)]]
