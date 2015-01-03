@@ -165,7 +165,7 @@
   (let [json-string (json/generate-string {:tests tests
                                            :code code
                                            :restricted (vec restricted)})
-        resp (client/post "http://localhost:4000/"
+        resp (client/post "http://localhost:4000/eval"
                {:body json-string})]
       (json/parse-string (:body resp))))
 
