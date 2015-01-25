@@ -9,6 +9,7 @@ var CodeBox = {
   animationTime:      800,
   waitTimePerItem:    500,
   images:             null,
+  lhsBoxes:           null,
 
 
   initialize: function() {
@@ -67,6 +68,7 @@ var CodeBox = {
       id = $('#id').attr("value");
 
     this.images = $(".testcases").find("img"),
+    this.lhsBoxes = $(".test-lhs");
 
     $.ajax({
       type: "POST",
@@ -107,12 +109,12 @@ var CodeBox = {
   successCallback: function(data) {
     var waitTime = this.waitTimePerItem;
 
+    var status = data.results.status,
+        results = data.results.results;
     var failingTest = data.failingTest,
       getColorFor = function(index) {
-        return index === failingTest ? "red" : "green";
-      },
-      testWasExecuted = function(index) {
-        return index <= failingTest;
+        if (status === "bad-code") return "red";
+        else return results[index].status !== "test-passed" ? "red" : "green";
       },
       setColor = function(index,element) {
         var color = getColorFor(index);
@@ -128,9 +130,18 @@ var CodeBox = {
         $("#golfgraph").html(data.golfChart);
         $("#golfscore").html(data.golfScore);
         configureGolf();
+      },
+      showLhsBox = function(index,element) {
+          console.log("BOX");
+          if (status === "bad-code") return;
+          if (results[index].status === "test-failed") {
+              $(this).show();
+              $(this)[0].CodeMirror.setValue("==> " + results[index]["lhs-result"]);
+          }
       };
 
-    this.images.filter( testWasExecuted ).each(setColor);
+    this.images.each(setColor);
+    this.lhsBoxes.each(showLhsBox);
     setTimeout(setMessages, waitTime);
   },
 

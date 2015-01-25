@@ -365,7 +365,7 @@ div#shared-code-box {
   float: left;
 }
 
-div#testcases {
+div.testcases {
    float: left;
    margin: 10px;
 }
@@ -376,6 +376,17 @@ li.testcase {
    list-style-type: none;
    background-color: #eee;
    font-family: Courier;
+}
+div.testcase {
+}
+div.testcase-status {
+    float: left;
+    width: 20px;
+    padding: 10px;
+    height: 100%;
+}
+div.testcase-content {
+    margin-left: 40px;
 }
 div.syntaxhighlighter {
   padding: 4px;
@@ -671,6 +682,10 @@ a.graph-class :hover {color: #445599;}
 .CodeMirror.test {
     padding-top: 10px;
     padding-bottom: 10px;
+}
+
+.CodeMirror.test-lhs {
+    display: none;
 }
 
 hr.solution {

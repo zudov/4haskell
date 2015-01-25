@@ -203,17 +203,18 @@ Return a map, {:message, :error, :url, :num-tests-passed}."
                                 :blue  ["blue"  "test not run"]}
                                :src #(str "images/" % "light.png"))]
   (defn render-test-cases [tests]
-    [:table {:class "testcases"}
+    [:div {:class "testcases"}
      (let [fail (session/flash-get :failing-test)]
        (for [[idx test] (map-indexed list tests)]
-         [:tr
-          [:td
+         [:div {:class "testcase", :id (str "testcase-" idx)}
+          [:div {:class "testcase-status"}
            (light-img (cond
                        (or (nil? fail) (> idx fail)) :blue
                        (= idx fail)                  :red
                        :else                         :green))]
-          [:td
-           [:pre.test test]]]))]))
+          [:div {:class "testcase-content"}
+           [:pre.test test]
+           [:pre.test-lhs ""]]]))]))
 
 (defn render-golf-chart []
   (let [{:keys [id best score] :as settings}

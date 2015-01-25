@@ -247,7 +247,7 @@ function highlightPreElements() {
   $('pre').not('.no-hl').each(function() {
     var el = $(this);
     // Don't show line numbers if current element is test or it is an example on help page.
-    var hasLineNumbers = !(el.hasClass('test') || el.parents('#getting-started').length > 0);
+    var hasLineNumbers = !(el.hasClass('test') || !(el.hasClass('test_lhs')) || el.parents('#getting-started').length > 0);
     var editor = CodeMirror(function(editor) {
       el.replaceWith(editor);
     }, {value: el.text(),
