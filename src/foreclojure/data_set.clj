@@ -92,7 +92,7 @@ __ = -- Write your code here"
    :links {"LYAH: Baby's first functions" (lyah "starting-out" "babys-first-functions")}
   })
 (def odd-number
-  {:title "Odd number"
+  {:title "Am I odd?"
    :description "Write a function which tests if the number is odd. I would use recursion and pattern matching."
    :tags ["lists" "recursion"]
    :difficulty "easy"
@@ -144,17 +144,6 @@ __ = -- Write your code here"
            "LYAH: Recursion" (lyah "recursion")
            "LYAH: Only folds and horses" (lyah "higher-order-functions" "folds")}})
 
-(def last-element
-  {:title "Last Element"
-   :restricted ["last" "lists"]
-   :description "Write a function which returns the last element in a sequence."
-   :tags ["list" "Prelude"]
-   :difficulty "easy" 
-   :tests ["__ [1..5] == 5"
-           "__ [3,2,1] == 1"
-           "__ \"haskell\" == 'l'"]
-   :links {"LYAH: Pattern matching" (lyah "syntax-in-functions" "pattern-matching")
-           "LYAH: Recursion" (lyah "recursion")}})
 (def null
   {:title "Null"
    :restricted ["null" "length"]
@@ -254,7 +243,7 @@ __ = -- Write your code here"
 (def functor-maybe
   {:title "Functor Maybe"
    :description "Implement a functor instance for Maybe"
-   :defs "instance Functor Maybe where\n    fmap = undefined"
+   :defs (str functor-class "instance Functor Maybe where\n    fmap = undefined")
    :restricted ["Functor(..)"]
    :difficulty "easy"
    :tags ["typeclasses", "functor", "maybe"]
@@ -273,7 +262,7 @@ __ = -- Write your code here"
             | Node [Tree a]
             deriving (Eq, Show)
 
-instance Functor ITree where
+instance Functor Tree where
     fmap = undefined"
    :difficulty "intermediate"
    :tags ["typeclasses" "functor" "maybe"]
@@ -284,6 +273,129 @@ instance Functor Tree where
     fmap f (Node xs) = Node $ fmap (fmap f) xs"]}
    :links {"LYAH: The Functor typeclass" (lyah "making-our-own-types-and-typeclasses" "the-functor-typeclass")
            "Typeclassopedia: Functor" (typeclassopedia "Functor")}})
+
+(def lists-intersperse
+  {:title "Intersperse"
+   :description "Intersperse given element between the elements of the given list."
+   :tags ["list"]
+   :difficulty "easy"
+   :tests ["__ ',' \"abcde\" == \"a,b,c,d,e\""
+           "__ () [] == []"]})
+
+(def lists-transpose
+  {:title "Transpose"
+   :description "Transpose the rows and columns."
+   :tags ["list"]
+   :difficulty "moderate"
+   :tests ["__ [[1,2,3],[4,5,6]] == [[1,4],[2,5],[3,6]]"
+           "__ [[1,2,3],[4,5]] == [[1,4],[2,5],[3]]"
+           "__ [[1,2,3],[4,5,6,7]] == [[1,4],[2,5],[3,6],[7]]"]})
+
+; 99 haskell problems
+
+; 1
+(def last-element
+  {:title "Last Element"
+   :restricted ["last"]
+   :description "Find the last element of a list."
+   :tags ["list" "Prelude"]
+   :difficulty "easy" 
+   :tests ["__ [1..5] == 5"
+           "__ [3,2,1] == 1"
+           "__ \"haskell\" == 'l'"]
+   :links {"LYAH: Pattern matching" (lyah "syntax-in-functions" "pattern-matching")
+           "LYAH: Recursion" (lyah "recursion")}})
+
+; 2
+(def last-but-one-element
+  {:title "Last but one element"
+   :restricted ["last"]
+   :description "Find the last but one element of a list."
+   :tags ["list"]
+   :difficulty "easy"
+   :tests ["__ [1,2,3,4] == 3"
+           "__ ['a'..'z'] == 'y'"]
+   :links {"LYAH: Pattern matching" (lyah "syntax-in-functions" "pattern-matching")
+           "LYAH: Recursion" (lyah "recursion")}})
+
+; 3
+(def n-th-element
+  {:title "N'th element"
+   :restricted ["(!)"]
+   :description "Find the N'th element of a list. Counting starts with 0."
+   :tags ["list" "Prelude"]
+   :difficulty "easy"
+   :tests ["__ \"haskell\" 3 == 'k'"
+           "__ \"lambda\" 3 == 'b'"]
+   :links {"LYAH: Pattern matching" (lyah "syntax-in-functions" "pattern-matching")
+           "LYAH: Recursion" (lyah "recursion")}})
+
+; 4
+(def length
+  {:title "How long are you?"
+   :restricted ["length"]
+   :description "Find the length (number of elements of a list)."
+   :tags ["list" "Prelude"]
+   :difficulty "easy"
+   :tests ["__ [2..5] == 4"
+           "__ \"I am sooo long\" == 14"]
+   :links {"LYAH: Only folds and horses" (lyah "higher-order-functions" "folds")}})
+
+; 5
+(def reverse-me
+  {:title "Reverse me"
+   :restricted ["reverse"]
+   :description "Reverse a list."
+   :tags ["list" "Prelude"]
+   :difficulty "easy"
+   :tests ["__ \"A man, a plan, a canal, panama!\" == \"!amanap ,lanac a ,nalp a ,nam A\""
+           "__ [1..4] == [4,3,2,1]"]
+   :links {"LYAH: Only folds and horses" (lyah "higher-order-functions" "folds")}})
+
+; 6
+(def palindrome
+  {:title "Am I palindromic?"
+   :description "Find out whether a list is a palindrome. A palindrome can bread forward or backward (e.g. \"level\")"
+   :tags ["list" "Prelude"]
+   :difficulty "easy"
+   :tests ["__ \"kayak\" == True"
+           "__ [1,2,3,2,1] == True"
+           "__ \"palindrome\" == False"]})
+
+; 7
+(def list-flatten
+  {:title "Flatten me"
+   :description "Transform a list possibly holding lists as elements into a 'flat' list by replacing each list with its elements (recursively).
+As lists in Haskell are homogeneous (all elements must be of the same type), we would have to define our own heterogenous NestedList data type."
+   :tags ["list"]
+   :difficulty "intermediate"
+   :tests ["flatten (Elem 5) == [5]"
+           "flatten (List [Elem 1, List [Elem 2, List [Elem 3, Elem 4], Elem 5]]) == [1..5]"]
+   ;TODO: Add links
+   :defs "data NestedList a = Elem a | List [NestedList a]
+
+flatten :: NestedList a -> [a]
+flatten = undefined"
+   })
+
+; 8
+(def compress
+  {:title "Compress me"
+   :description "Eliminate consecutive duplicates of list elements.
+If a list contains repeated elements they should be replaced with a single copy of the element. The order of elements should not be changed."
+   :tags ["list"]
+   :tests ["__ \"aaaabccaadeeee\" == \"abcade\""
+           "__ \"HAAAAAASKEEEEELL!!!!\" == \"HASKEL!\""]
+   :difficulty "intermediate"})
+
+; 9
+(def pack
+  {:title "Pack us together"
+   :description "Pack consecutive duplicates of list elements into sublists. If a list contains repeated elements they should be placed in separate sublists."
+   :tags ["list"]
+   :tests ["__ \"aaaabccaadeeee\" == [\"aaaa\", \"b\", \"cc\", \"aa\", \"d\", \"eeee\"]"
+           "__ \"split al of us\" == [\"s\", \"p\", \"l\", \"i\", \"t\", \" \", \"a\", \"l\", \" \", \"o\", \"f\", \" \", \"u\", \"s\"]"]
+   :difficulty "intermediate"})
 
 (defn add-boilerplate-fields [n problem]
   (-> problem
@@ -308,7 +420,9 @@ instance Functor Tree where
    lists-cons
    lists-map
    lists-filter
+   lists-intersperse
    coordinate-grid
+   lists-transpose
    ; Strings
    hello-world
    ; Prelude
@@ -325,6 +439,16 @@ instance Functor Tree where
    functor-list
    functor-maybe
    functor-tree
+   ;; 99 haskell problems
+   last-element
+   last-but-one-element
+   n-th-element
+   length
+   reverse-me
+   palindrome
+   list-flatten
+   compress
+   pack
   ])
 
 (def all-problems-to-insert
