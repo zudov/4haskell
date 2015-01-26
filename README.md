@@ -15,10 +15,6 @@ on what to work on.
 
 * Download and install [leiningen](https://github.com/technomancy/leiningen).
 * Download and install [mongodb](http://www.mongodb.org/).
-* Use cabal to build [mueval](https://hackage.haskell.org/package/mueval)
-  * make sure that mueval binaries are in your PATH
-  * test that mueval works by running `mueval -t 10 -e "2+2"`
-
 * cd to the 4clojure project directory and run `lein deps`.
 * Start up your mongodb, if you don't have autostart:
 
@@ -27,6 +23,9 @@ on what to work on.
 
         ./load-data.sh
 
+* Evaluation is done with [mueval-cloud](https://github.com/zudov/mueval-cloud)
+  service you need to point 4haskell to the mueval-cloud-master endpoint with 
+  field `:eval-endpoint` in resources/config.clj
 * Run `lein ring server`
 
 * To run the tests: `lein test`
