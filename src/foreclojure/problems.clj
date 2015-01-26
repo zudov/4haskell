@@ -8,6 +8,7 @@
             [clojure.data.xml         :refer   [element]])
   (:import  [org.apache.commons.mail  EmailException])
   (:use     [foreclojure.utils        :only    [from-mongo get-user get-solved login-link flash-msg flash-error row-class approver? can-submit? send-email image-builder if-user with-user as-int maybe-update escape-html]]
+            [foreclojure.config       :only    [config]]
             [foreclojure.ring-utils   :only    [*url*]]
             [foreclojure.template     :only    [def-page content-page]]
             [foreclojure.social       :only    [tweet-link]]
@@ -165,7 +166,7 @@
   (let [json-string (json/generate-string {:tests tests
                                            :code code
                                            :restricted (vec restricted)})
-        resp (client/post "http://localhost:4000/eval"
+        resp (client/post (:eval-endpoint config)
                {:body json-string})]
       (json/parse-string (:body resp))))
 
@@ -176,18 +177,19 @@ specified id.
 Return a map, {:message, :error, :url, :num-tests-passed}."
   [id code]
   (let [{:keys [tests restricted] :as problem} (get-problem id)
-          cloud (mueval code restricted tests)
-          _ (prn cloud)
-          results (if (= (cloud "tag") "BadCode")
-                         [(cloud "contents")]
-                         (for [result (cloud "contents")]
-                            (cond (= (result "tag") "Passed") nil
-                                  (= (result "tag") "Failed") (result "contents"))))
+          resp (mueval code restricted tests)
+          results (if (= (resp "status") "bad-code")
+                         [(resp "problem-desc")]
+                         (for [result (resp "results")]
+                            (cond (= (result "status") "test-passed") nil
+                                  (= (result "status") "test-failed") ""
+                                  (= (result "status") "evaluation-failed") (result "error-msg"))))
           [passed [fail-msg]] (split-with nil? results)]
       (assoc (if fail-msg
                {:message "", :error fail-msg, :url *url*}
                (mark-completed problem code))
-        :num-tests-passed (count passed))))
+        :num-tests-passed (count passed)
+        :results resp)))
 
 (defn static-run-code [id code]
   (session/flash-put! :code code)
@@ -236,9 +238,10 @@ Return a map, {:message, :error, :url, :num-tests-passed}."
         [:span#graph-link "View Chart"]]])))
 
 (defn rest-run-code [id raw-code]
-  (let [{:keys [message error url num-tests-passed]} (run-code id raw-code)]
+  (let [{:keys [message error url num-tests-passed results]} (run-code id raw-code)]
     (json/generate-string {:failingTest num-tests-passed
                            :message message
+                           :results results
                            :error error
                            :golfScore (html (render-golf-score))
                            :golfChart (html (render-golf-chart))})))
